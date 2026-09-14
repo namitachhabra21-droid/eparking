@@ -1,0 +1,8 @@
+{
+  "name": "parkflow",
+  "version": "1.0.0",
+  "description": "ParkFlow — SaaS parking management frontend. Zero-build ES modules, no dependencies.",
+  "type": "module",
+  "private": true,
+  "license": "MIT"
+}

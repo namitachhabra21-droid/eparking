@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ParkFlow — Smart Parking Management</title>
+  <meta name="description" content="ParkFlow — SaaS platform for real-time parking operations, reservations, revenue and fleet analytics.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%233366f2'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='system-ui' font-weight='bold' fill='white'>P</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/shell.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <style>
+    #boot {
+      position: fixed; inset: 0; z-index: 999;
+      display: grid; place-items: center;
+      background: var(--bg);
+      animation: bootOut .45s var(--e-out) 1.05s forwards;
+    }
+    @keyframes bootOut { to { opacity: 0; visibility: hidden; } }
+    .boot-in { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .boot-mark {
+      width: 60px; height: 60px; border-radius: 18px;
+      background: linear-gradient(145deg, #598eff, #2149d6 55%, #1b39ab);
+      display: grid; place-items: center; color: #fff;
+      box-shadow: 0 12px 34px -8px rgba(51,102,242,.55);
+      animation: bootPop .6s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes bootPop { from { transform: scale(.5) rotate(-12deg); opacity: 0; } }
+    .boot-mark svg { width: 32px; height: 32px; }
+    .boot-name { font: 700 19px/1 var(--font); letter-spacing: -.5px; }
+    .boot-bar { width: 150px; height: 3px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
+    .boot-bar i { display: block; height: 100%; width: 40%; border-radius: 99px;
+      background: linear-gradient(90deg, #3366f2, #06b6d4);
+      animation: bootSlide 1.05s var(--e-out) infinite; }
+    @keyframes bootSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(310%); } }
+    noscript { display: block; padding: 40px; text-align: center; font: 500 15px var(--font); }
+  </style>
+</head>
+<body>
+  <div id="boot">
+    <div class="boot-in">
+      <div class="boot-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 20V5.5A1.5 1.5 0 0 1 8.5 4h4a4.5 4.5 0 0 1 0 9H7"/>
+        </svg>
+      </div>
+      <div class="boot-name">ParkFlow</div>
+      <div class="boot-bar"><i></i></div>
+    </div>
+  </div>
+
+  <noscript>ParkFlow requires JavaScript to run. Please enable it and reload.</noscript>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
