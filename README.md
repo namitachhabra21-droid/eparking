@@ -1,64 +1,76 @@
-# ParkFlow — Smart Parking Management (Frontend)
+# ParkFlow eParking
 
-A SaaS-grade, zero-build frontend for a multi-facility e-parking operation.
-Pure ES modules + CSS — **no bundler, no framework, no install step.**
+A full-stack, multi-organization parking management application. The existing ParkFlow interface is backed by an authenticated Node.js API and persistent PostgreSQL storage.
 
-## Run
+**Live application:** https://eparkingse.vercel.app
 
-```bash
-npx serve .          # or: python3 -m http.server 5173
+**Repository:** https://github.com/namitachhabra21-droid/eparking
+
+## Technology
+
+- **Frontend:** responsive HTML/CSS, JavaScript ES modules, SVG charts, accessible dialogs, reusable searchable tables. No frontend build framework is required.
+- **Backend:** Node.js 24, Express 5, Zod validation, Helmet security headers, rate limiting.
+- **Database:** Neon PostgreSQL on Vercel. Organization business records are stored in a transactional JSONB aggregate; identities and sessions use relational tables. Row locks serialize concurrent allocations within an organization.
+- **Authentication:** scrypt password hashes, opaque server-side sessions, hashed session tokens, HTTP-only cookies, same-origin and CSRF checks. Admin, operator and viewer roles are enforced by the API.
+- **Hosting:** Vercel static assets and a Node.js function. GitHub integration enables deployment from this repository.
+- **Tests:** Node test runner, Supertest API integration tests, PGlite PostgreSQL-compatible isolated test databases, Selenium WebDriver browser regression.
+
+## Working features
+
+- Create an organization and sign in. Workspaces are isolated; each starts with four configurable facilities and 680 available bays, with no fabricated operating records.
+- Reserve a bay with an arrival date/time, driver, plate, vehicle, duration and expected payment method. The server assigns unique identifiers and rejects simultaneous allocation of the same bay.
+- Check in a reservation, extend a stay, check out, record an actual received payment and download a receipt. Session, customer and bay state update in the same transaction.
+- Cancel bookings, automatically expire no-shows, and place/release bays under maintenance.
+- View actual occupancy, session charges, received-payment totals, activity history, overdue alerts and high-occupancy incidents.
+- Add/edit customers and shift-roster records. Customer history is joined using stable IDs.
+- Save organization details, alert thresholds and reservation grace rules. Configure facilities, capacities, zones and hourly tariffs.
+- Manage workspace accounts with administrator/operator/viewer access, change passwords and sign out. Changing a password revokes previous sessions.
+- Download session, customer, payment and staff CSV files. Potential spreadsheet formulas are neutralized in exported text.
+- Search, sort, filter, paginate, switch themes, use keyboard shortcuts and work on mobile.
+
+## Run locally
+
+Requires Node.js 24 and npm.
+
+```sh
+npm ci
+npm run dev
 ```
 
-Then open <http://localhost:5173>.
+Open http://localhost:5173. Without `DATABASE_URL`, development uses a **durable local PGlite database** in `.data/postgres`; installing a separate PostgreSQL server is unnecessary. `.data` is ignored by Git. Create your own account through **Create workspace**. There is no shared default administrator password.
 
-> Must be served over HTTP (ES modules are blocked on `file://`).
+To use PostgreSQL locally, copy `.env.example` to `.env`, set `DATABASE_URL` to a pooled TLS-enabled PostgreSQL connection string, and restart. Vercel CLI environment pulls use the ignored `.env.local` file; it takes precedence over `.env`. The API initializes its schema automatically under a PostgreSQL advisory transaction lock. Never commit environment files or database credentials.
 
-## Features
-
-| Area | What's in it |
-|---|---|
-| **Dashboard** | Animated KPI tiles with sparklines, dual-axis occupancy/revenue curve (24h · 7d · 6m), live status donut, streaming activity feed, active-session table |
-| **Live Bay Map** | 680 bays across 4 facilities, colour-coded by state, click any bay to reserve/release. Filter by status or EV. Repaints itself as the simulation runs |
-| **Sessions** | Full ledger — sortable, searchable, filterable, paginated. Drill into any session to extend or check out |
-| **Reservations** | Booking pipeline + next-arrivals rail, check-in / cancel flows |
-| **Customers** | Accounts by plan tier, lifetime value, EV eligibility, per-account drill-down |
-| **Analytics** | YoY revenue area chart, weekly grouped bars, hourly demand curve, facility benchmark table, payment-rail donut |
-| **Alerts** | Severity-tiered incident stream with acknowledge / dismiss |
-| **Team** | Roster with shift and duty filters |
-| **Settings** | 5 tabs — org, tariffs (incl. surge threshold), facilities, hardware health, notification channels |
-
-## Dynamic behaviour
-
-- **Live simulation** — bays flip state every 4s; KPIs, rail meter and activity feed update in place
-- **Booking wizard** — 3-step flow that writes a real reservation and holds the bay
-- **Command palette** — `⌘K` / `Ctrl+K` to jump to any page, plate or action
-- **Dark mode** — persisted to `localStorage`, full token swap
-- **Collapsible rail** — `⌘B`, persisted
-- **Toasts, modals, ripples, count-ups, skeletons** — all hand-rolled
-- **Responsive** — sidebar becomes a drawer under 820px
-
-## Structure
-
-```
-index.html
-assets/
-  css/  theme.css       design tokens + dark mode + reset
-        shell.css       rail, topbar, page frame, responsive
-        components.css  cards, buttons, tables, charts, modals, toasts
-  js/   app.js          shell, router, theme, command palette
-        core/  store.js      seeded data + live simulation + pub/sub
-               ui.js         DOM helpers, SVG charts, toasts, modals
-               datatable.js  sort / search / filter / paginate engine
-               icons.js      37 inline SVG icons
-        views/ dashboard · lotmap · sessions · bookings · customers
-               analytics · alerts · staff · settings · booking
+```sh
+npm test               # API and domain integration tests in isolated databases
+npm run test:e2e        # Full-stack browser tests; Chrome required
+npm run coverage       # Coverage for the API/domain test run
+npm run build          # Copy deployable frontend into public/
+npm start              # Start the local application server
 ```
 
-## Notes
+Historical prototype tests are preserved separately (`npm run test:prototype`). Other files in `tests/e2e` and `docs/lab` document the original frontend prototype; the `fullstack.e2e.test.js` suite is the current application regression suite.
 
-All data is generated client-side by a **seeded** PRNG in `core/store.js`, so the
-app looks identical on every reload while still animating. There is no backend —
-swap the `DB` export for real `fetch` calls and the views need no changes.
+## Deploy to Vercel
 
-Charts are hand-written SVG (no chart library) — see `areaChart`, `barChart`,
-`donut` and `sparkline` in `core/ui.js`.
+1. Import this GitHub repository into Vercel, or link it with `vercel link`. Existing deployment project: `eparking_se`.
+2. Use Node.js 24 and framework preset **Other**. The repository defines its build command and output directory in `vercel.json`.
+3. Connect a Neon PostgreSQL resource in Vercel Storage/Marketplace. The API requires `DATABASE_URL` in every deployment environment. No filesystem database fallback is allowed in production.
+4. Deploy with `vercel --prod`, or push to the repository's production branch after connecting the Vercel Git integration.
+5. Check `/api/health`, register a private workspace, and exercise the booking → check-in → checkout flow.
+
+The deployment serves only `public/` plus the API function; reports, local databases, test files and secrets are excluded. Source asset filenames are not immutable-cached, so updates reach clients promptly.
+
+## Operational boundaries
+
+**Payments:** this version records payments that an operator has actually received. Cash is recorded directly; UPI/Card/Wallet/FASTag require a verified external transaction reference. It does not charge cards, capture online payments or automatically refund. Connecting a live gateway requires your provider account, credentials and verified webhooks. No simulated payment is presented as collected money.
+
+**Hardware and messaging:** cameras, gates, EV telemetry, SMS and email providers are not connected. Their status is explicitly shown as not connected. Find Plate performs a lookup in actual records. Alerts are available in-app.
+
+**Reservation policy:** a reservation commits a bay immediately until arrival or cancellation. Check-in opens 30 minutes before arrival; the configurable grace period controls no-show expiration. A bay cannot simultaneously hold multiple future reservations. Session fares use the agreed hourly rate with a one-hour minimum; published rates apply to new bookings. Maintenance bays are excluded from availability.
+
+**Refresh:** clients poll every ten seconds while visible; there are no fabricated bay flips. No-show and overstay housekeeping runs when the API is accessed. This is not a continuously running device gateway or a background notification service.
+
+**Scale:** a JSONB aggregate per organization is deliberately simple and provides atomic changes. Large fleets should migrate high-volume records into indexed relational tables and use dedicated event ingestion. Received-payment summaries use recorded receipts; historical records are never generated to fill charts. The day total uses Asia/Kolkata; historical chart buckets are labeled UTC.
+
+See [API and data design](docs/fullstack.md) for endpoints, security, transactions and operational notes. The Word reports in local `outputs/` describe the earlier prototype and are not a specification of this release.

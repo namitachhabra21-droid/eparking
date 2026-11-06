@@ -1,0 +1,56 @@
+▶ TS-01 Slot generation
+  ✔ UT-01 total bays equal the sum of facility capacities (680) (0.444875ms)
+  ✔ UT-02 each facility gets exactly its capacity (0.171ms)
+  ✔ UT-03 zone remainder goes to earlier zones (0.633375ms)
+  ✔ UT-04 slot ids are unique and well-formed (0.4405ms)
+  ✔ UT-05 every 11th bay is EV, every 17th (non-EV) is accessible (0.188083ms)
+  ✔ UT-06 free bays carry no plate or start time (0.113417ms)
+✔ TS-01 Slot generation (2.734209ms)
+▶ TS-02 Billing rule
+  ✔ UT-07 amount = max(hourly rate, round(mins/60 × rate)) (0.136584ms)
+  ✔ UT-08 minimum charge is one hour even for short stays (0.091292ms)
+  ✔ UT-09 every active session maps to an occupied bay (0.31625ms)
+✔ TS-02 Billing rule (0.63125ms)
+▶ TS-03 Metrics
+  ✔ UT-10 free + occupied + reserved = total (all facilities) (0.434584ms)
+  ✔ UT-11 occupancy % is within [0, 100] (0.682917ms)
+  ✔ UT-12 per-facility totals add up to the estate total (0.374292ms)
+  ✔ UT-13 unknown facility id yields an empty, zero-safe result (0.40275ms)
+✔ TS-03 Metrics (1.989708ms)
+▶ TS-04 Formatters
+  ✔ UT-14 money() uses ₹ and Indian digit grouping (34.327917ms)
+  ✔ UT-15 compact() boundary values (0.092542ms)
+  ✔ UT-16 dur() splits hours and minutes at 60 (0.052875ms)
+  ✔ UT-17 ago() picks the right unit (0.061375ms)
+  ✔ UT-18 initials() takes first letters, max two (0.0605ms)
+  ✔ UT-24 clock() and dateStr() use en-IN 12-hour time and short dates (6.953417ms)
+✔ TS-04 Formatters (41.664583ms)
+▶ TS-05 Random helpers
+  ✔ UT-19 ri(a, b) stays inside the inclusive range (0.181584ms)
+  ✔ UT-20 pick() always returns a member (0.059084ms)
+✔ TS-05 Random helpers (0.299875ms)
+▶ TS-06 Activity feed & live simulation
+  ✔ UT-21 feed is capped at 40 items, newest first (0.180041ms)
+  ✔ UT-22 live tick emits events and keeps bay counts consistent (1.660417ms)
+  ✔ UT-23 unsubscribe stops delivery (0.146208ms)
+✔ TS-06 Activity feed & live simulation (2.125ms)
+ℹ tests 24
+ℹ suites 6
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 122.911542
+ℹ start of coverage report
+ℹ ------------------------------------------------------------
+ℹ file        | line % | branch % | funcs % | uncovered lines
+ℹ ------------------------------------------------------------
+ℹ assets      |        |          |         | 
+ℹ  js         |        |          |         | 
+ℹ   core      |        |          |         | 
+ℹ    store.js | 100.00 |    99.21 |  100.00 | 
+ℹ ------------------------------------------------------------
+ℹ all files   | 100.00 |    99.21 |  100.00 | 
+ℹ ------------------------------------------------------------
+ℹ end of coverage report

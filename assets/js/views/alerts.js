@@ -1,89 +1,63 @@
-import { DB, ago, initials } from '../core/store.js';
-import { esc, toast } from '../core/ui.js';
-import { icon } from '../core/icons.js';
-
-const TONE = { ok: ['var(--ok-500)', 'var(--ok-bg)'], warn: ['var(--warn-500)', 'var(--warn-bg)'],
-  bad: ['var(--bad-500)', 'var(--bad-bg)'], info: ['var(--info-500)', 'var(--info-bg)'] };
-
-export function render(root) {
-  let filter = 'all';
-
+import { DB, ago, action } from "../core/store.js";
+import { esc, toast } from "../core/ui.js";
+import { icon } from "../core/icons.js";
+export function render(root, ctx) {
+  let filter = "all";
+  root.innerHTML = `<div class="page-head"><div class="ph-txt"><h2>Alerts and Incidents</h2><p>Actionable occupancy and session alerts from your parking records.</p></div><div class="ph-act"><button class="btn btn-ghost" id="ack-all">Acknowledge all</button><button class="btn btn-primary" id="alert-policy">Alert policy</button></div></div><div class="grid g-3" style="margin-bottom:16px">${[
+    ["Critical", DB.alerts.filter((a) => a.sev === "bad" && !a.ack).length],
+    ["Warnings", DB.alerts.filter((a) => a.sev === "warn" && !a.ack).length],
+    ["Unacknowledged", DB.alerts.filter((a) => !a.ack).length],
+  ]
+    .map(
+      ([label, n]) =>
+        `<div class="card stat"><div class="stat-label">${label}</div><div class="stat-val">${n}</div></div>`,
+    )
+    .join(
+      "",
+    )}</div><div class="card"><div class="toolbar"><div class="seg" id="a-seg"><button class="on" data-f="all">All</button><button data-f="open">Open</button><button data-f="ack">Acknowledged</button></div></div><div class="feed" id="alist"></div></div>`;
   const paint = () => {
-    const list = filter === 'all' ? DB.alerts
-      : filter === 'open' ? DB.alerts.filter(a => !a.ack) : DB.alerts.filter(a => a.ack);
-    root.querySelector('#alist').innerHTML = list.length ? list.map(a => {
-      const [fg, bg] = TONE[a.sev] || TONE.info;
-      return `
-        <div class="feed-item" data-id="${a.id}" style="align-items:flex-start">
-          <div class="feed-ico" style="background:${bg};color:${fg}">${icon(a.icon)}</div>
-          <div class="feed-body">
-            <div class="row" style="gap:8px;margin-bottom:3px;flex-wrap:wrap">
-              <b class="fs13">${esc(a.title)}</b>
-              <span class="badge ${a.sev === 'bad' ? 'bad' : a.sev === 'warn' ? 'warn' : a.sev === 'ok' ? 'ok' : 'info'}">${a.sev === 'bad' ? 'critical' : a.sev === 'warn' ? 'warning' : a.sev === 'ok' ? 'resolved' : 'info'}</span>
-              ${a.ack ? '<span class="badge neutral">acknowledged</span>' : ''}
-            </div>
-            <p>${esc(a.body)}</p>
-            <div class="feed-time">${esc(a.lot)} · ${ago(a.at)} · ${esc(a.id)}</div>
-          </div>
-          <div class="row" style="gap:6px">
-            ${!a.ack ? `<button class="btn btn-sm btn-ghost" data-ack="${a.id}">${icon('check')} Ack</button>` : ''}
-            <button class="btn btn-sm btn-subtle" data-dis="${a.id}">${icon('x')}</button>
-          </div>
-        </div>`;
-    }).join('') : `<div class="empty"><div class="empty-ico">${icon('shield')}</div>
-        <h4>All clear</h4><p>No alerts match this filter. Systems are operating normally.</p></div>`;
+    const list = DB.alerts.filter(
+      (a) => filter === "all" || (filter === "open" ? !a.ack : a.ack),
+    );
+    root.querySelector("#alist").innerHTML =
+      list
+        .map(
+          (a) =>
+            `<div class="feed-item"><div class="feed-ico">${icon(a.icon || "alert")}</div><div class="feed-body"><b>${esc(a.title)}</b> <span class="badge ${a.ack ? "neutral" : "warn"}">${a.ack ? "acknowledged" : esc(a.sev)}</span><p>${esc(a.body)}</p><div class="feed-time">${esc(a.lot)} · ${ago(a.at)}</div></div><div class="row">${!a.ack ? `<button class="btn btn-sm btn-ghost" data-ack="${a.id}">Ack</button>` : ""}<button class="btn btn-sm btn-ghost" data-dis="${a.id}" aria-label="Dismiss alert">Dismiss</button></div></div>`,
+        )
+        .join("") ||
+      '<div class="empty"><h4>All clear</h4><p>No incidents match this filter.</p></div>';
   };
-
-  root.innerHTML = `
-    <div class="page-head">
-      <div class="ph-txt"><h2>Alerts &amp; Incidents</h2>
-        <p>Hardware health, overstays, payment failures and capacity events.</p></div>
-      <div class="ph-act">
-        <button class="btn btn-ghost" data-act="ackall">${icon('check')} Acknowledge All</button>
-        <button class="btn btn-primary" data-act="rules">${icon('sliders')} Alert Rules</button>
-      </div>
-    </div>
-
-    <div class="grid g-4" style="margin-bottom:16px">
-      ${[['Critical', DB.alerts.filter(a => a.sev === 'bad').length, 'alert', 'var(--bad-500)'],
-         ['Warnings', DB.alerts.filter(a => a.sev === 'warn').length, 'bell', 'var(--warn-500)'],
-         ['Unacknowledged', DB.alerts.filter(a => !a.ack).length, 'eye', '#8b5cf6'],
-         ['Devices Online', '98%', 'cpu', 'var(--ok-500)']]
-        .map(([l, v, i, t]) => `
-          <div class="card stat" style="--tint:${t}">
-            <div class="stat-top"><span class="stat-label">${l}</span><div class="stat-ico">${icon(i)}</div></div>
-            <div class="stat-val">${v}</div></div>`).join('')}
-    </div>
-
-    <div class="card">
-      <div class="toolbar">
-        <div class="seg" id="a-seg">
-          <button class="on" data-f="all">All</button>
-          <button data-f="open">Open</button>
-          <button data-f="ack">Acknowledged</button>
-        </div>
-        <div class="spacer"></div>
-        <span class="live-pill"><i class="ld"></i> Monitoring</span>
-      </div>
-      <div class="feed" id="alist"></div>
-    </div>`;
-
+  root.querySelectorAll("[data-f]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        filter = b.dataset.f;
+        root
+          .querySelectorAll("[data-f]")
+          .forEach((x) => x.classList.toggle("on", x === b));
+        paint();
+      }),
+  );
+  root.onclick = async (e) => {
+    const a = e.target.closest("[data-ack],[data-dis],#ack-all");
+    if (!a) return;
+    a.disabled = true;
+    try {
+      await action(
+        a.id === "ack-all" ? "ackall" : "alert",
+        a.id === "ack-all"
+          ? {}
+          : {
+              id: a.dataset.ack || a.dataset.dis,
+              action: a.dataset.ack ? "ack" : "dismiss",
+            },
+      );
+      toast("Alerts updated", "", "ok");
+    } catch (error) {
+      toast("Unable to update", error.message, "bad");
+      a.disabled = false;
+    }
+  };
+  root.querySelector("#alert-policy").onclick = () => ctx.go("settings");
   paint();
-
-  root.querySelector('#a-seg').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    filter = b.dataset.f;
-    root.querySelectorAll('#a-seg button').forEach(x => x.classList.toggle('on', x === b));
-    paint();
-  });
-
-  root.addEventListener('click', e => {
-    const ack = e.target.closest('[data-ack]')?.dataset.ack;
-    if (ack) { DB.alerts.find(a => a.id === ack).ack = true; toast('Acknowledged', ack, 'ok'); paint(); }
-    const dis = e.target.closest('[data-dis]')?.dataset.dis;
-    if (dis) { const i = DB.alerts.findIndex(a => a.id === dis); DB.alerts.splice(i, 1); toast('Dismissed', dis, 'brand'); paint(); }
-    const a = e.target.closest('[data-act]')?.dataset.act;
-    if (a === 'ackall') { DB.alerts.forEach(x => x.ack = true); toast('All acknowledged', `${DB.alerts.length} alerts cleared`, 'ok'); paint(); }
-    if (a === 'rules') toast('Alert rules', 'Opening rule builder…', 'brand');
-  });
 }

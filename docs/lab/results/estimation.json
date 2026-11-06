@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "scope": "Delivered browser prototype; educational working-data FPA, not a certified IFPUG application count",
+  "measurement": {
+    "tool": "cloc 2.06",
+    "tool_url": "https://raw.githubusercontent.com/AlDanial/cloc/v2.06/cloc",
+    "tool_sha256": "ed9fbdd081a2ceb933ea490b3c1cfacc87d3898ae2650d0d6756439695a836c8",
+    "files": [
+      {
+        "path": "assets/css/components.css",
+        "blank": 28,
+        "comment": 23,
+        "code": 355,
+        "language": "CSS",
+        "physical": 406,
+        "sha256": "74776d42ffb593905b2c19fe9504060431f218bf69dff16223ed4f6cdbd4d364"
+      },
+      {
+        "path": "assets/css/shell.css",
+        "blank": 18,
+        "comment": 11,
+        "code": 225,
+        "language": "CSS",
+        "physical": 254,
+        "sha256": "974514319c9e9b525bd127f390c5504255c21a3bfe7fece91836137175a6157f"
+      },
+      {
+        "path": "assets/css/theme.css",
+        "blank": 19,
+        "comment": 13,
+        "code": 117,
+        "language": "CSS",
+        "physical": 149,
+        "sha256": "b2d403e47470d6b838234e063ab26a9fbc6955cb7011cdfd58f44f3f52d7b1d3"
+      },
+      {
+        "path": "assets/js/app.js",
+        "blank": 20,
+        "comment": 8,
+        "code": 239,
+        "language": "JavaScript",
+        "physical": 267,
+        "sha256": "7531a032b213f8dab7f8695c05d1968264b4069982ba94c617b8e0f43b4b3194"
+      },
+      {
+        "path": "assets/js/core/datatable.js",
+        "blank": 9,
+        "comment": 3,
+        "code": 104,
+        "language": "JavaScript",
+        "physical": 116,
+        "sha256": "f3e5d36665f76d8f82c26631397e4db2e068d30c261a4ea8960436637f1b166e"
+      },
+      {
+        "path": "assets/js/core/icons.js",
+        "blank": 2,
+        "comment": 1,
+        "code": 42,
+        "language": "JavaScript",
+        "physical": 45,
+        "sha256": "3d6b9aecb1232d15a52d292cd87e637c64d436ce03b90c47a730f6a9d985389b"
+      },
+      {
+        "path": "assets/js/core/store.js",
+        "blank": 19,
+        "comment": 20,
+        "code": 262,
+        "language": "JavaScript",
+        "physical": 301,
+        "sha256": "241d4663c647a25dbc0e200b118114289773c64d6b86b6bc407c4faee0929a2b"
+      },
+      {
+        "path": "assets/js/core/ui.js",
+        "blank": 18,
+        "comment": 16,
+        "code": 237,
+        "language": "JavaScript",
+        "physical": 271,
+        "sha256": "174839e7668035a8c087525e2ddc50f78da339510e647fc89cd2e37517e85fc6"
+      },
+      {
+        "path": "assets/js/views/alerts.js",
+        "blank": 9,
+        "comment": 0,
+        "code": 80,
+        "language": "JavaScript",
+        "physical": 89,
+        "sha256": "2404f5387e4c1a9c9403c0a1b710b60fa5d90df553df43e4c8ac12d8cedb69de"
+      },
+      {
+        "path": "assets/js/views/analytics.js",
+        "blank": 8,
+        "comment": 1,
+        "code": 90,
+        "language": "JavaScript",
+        "physical": 99,
+        "sha256": "fdc7157354086aaa039ea55551164ba858ca5d4fc46597335fb3b9070f40b511"
+      },
+      {
+        "path": "assets/js/views/booking.js",
+        "blank": 6,
+        "comment": 1,
+        "code": 117,
+        "language": "JavaScript",
+        "physical": 124,
+        "sha256": "3b8d14f7a62f01aa3abf9863c6434f425ab2035d6dcc8b43f60883b711c6d8eb"
+      },
+      {
+        "path": "assets/js/views/bookings.js",
+        "blank": 7,
+        "comment": 0,
+        "code": 90,
+        "language": "JavaScript",
+        "physical": 97,
+        "sha256": "7958aa412345199d77024dcad4552966cf1fce9895e8471ad24081b28230c8a9"
+      },
+      {
+        "path": "assets/js/views/customers.js",
+        "blank": 7,
+        "comment": 0,
+        "code": 88,
+        "language": "JavaScript",
+        "physical": 95,
+        "sha256": "5a8771ad23374f11488a8883d88be98fefaf3a7564bf541049afbb2adfb94f20"
+      },
+      {
+        "path": "assets/js/views/dashboard.js",
+        "blank": 15,
+        "comment": 5,
+        "code": 201,
+        "language": "JavaScript",
+        "physical": 221,
+        "sha256": "19ebe363357aea944774d0a272afde68036901ff719d37470943f2a62592ee46"
+      },
+      {
+        "path": "assets/js/views/lotmap.js",
+        "blank": 15,
+        "comment": 1,
+        "code": 181,
+        "language": "JavaScript",
+        "physical": 197,
+        "sha256": "2a63dda91dbd90b183e6cdbfe312582f67ab6a8a4ce919a0f6f4dd0ae234d37b"
+      },
+      {
+        "path": "assets/js/views/sessions.js",
+        "blank": 4,
+        "comment": 0,
+        "code": 59,
+        "language": "JavaScript",
+        "physical": 63,
+        "sha256": "e07545bb618f34fa4a3837eee7fe4b566d82178ca3ca11dc2b1b6c457c95945b"
+      },
+      {
+        "path": "assets/js/views/settings.js",
+        "blank": 13,
+        "comment": 0,
+        "code": 138,
+        "language": "JavaScript",
+        "physical": 151,
+        "sha256": "2b989b8a5fecbaed1030c1841863b0b9ce1544a7290389fe469f779156fdf528"
+      },
+      {
+        "path": "assets/js/views/staff.js",
+        "blank": 3,
+        "comment": 0,
+        "code": 49,
+        "language": "JavaScript",
+        "physical": 52,
+        "sha256": "fe08885d70e09f40f5e871b12e21cde9c5f6648602c6a83253602a6d05e1ce3b"
+      },
+      {
+        "path": "index.html",
+        "blank": 1,
+        "comment": 0,
+        "code": 57,
+        "language": "HTML",
+        "physical": 58,
+        "sha256": "4a6c13c6b24b5a6aba29551213ab44bcf06b5de38013b23339c5f86de0760951"
+      }
+    ],
+    "languages": {
+      "CSS": {
+        "code": 697,
+        "comment": 47,
+        "blank": 65,
+        "physical": 809,
+        "files": 3
+      },
+      "JavaScript": {
+        "code": 1977,
+        "comment": 56,
+        "blank": 155,
+        "physical": 2188,
+        "files": 15
+      },
+      "HTML": {
+        "code": 57,
+        "comment": 0,
+        "blank": 1,
+        "physical": 58,
+        "files": 1
+      }
+    },
+    "totals": {
+      "blank": 221,
+      "comment": 103,
+      "code": 2731,
+      "nFiles": 19
+    }
+  },
+  "inputs_sha256": "ef68da2cde373572e841ca062cb59b8be79601364553f40c1d7fb3a7be7da5c2",
+  "function_points": {
+    "inventory": [
+      {
+        "name": "Bays",
+        "type": "ILF",
+        "ret": 1,
+        "det": 9,
+        "source": "assets/js/core/store.js:buildSlots",
+        "fields": "id, lot, zone, num, type, status, since, plate, floor",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Sessions",
+        "type": "ILF",
+        "ret": 1,
+        "det": 15,
+        "source": "assets/js/core/store.js:buildSessions",
+        "fields": "id, slot, lotId, lot, zone, user, plate, vehicle, start, mins, rate, amount, status, method, ev",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Reservations",
+        "type": "ILF",
+        "ret": 1,
+        "det": 11,
+        "source": "assets/js/core/store.js:buildReservations",
+        "fields": "id, user, plate, lot, lotId, slot, at, hours, amount, status, channel",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Customers",
+        "type": "ILF",
+        "ret": 1,
+        "det": 10,
+        "source": "assets/js/core/store.js:buildCustomers",
+        "fields": "id, name, email, plan, plates, visits, spend, since, status, ev",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Alerts",
+        "type": "ILF",
+        "ret": 1,
+        "det": 7,
+        "source": "assets/js/core/store.js:buildAlerts",
+        "fields": "id, sev, title, body, at, lot, ack",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Staff",
+        "type": "ILF",
+        "ret": 1,
+        "det": 7,
+        "source": "assets/js/core/store.js:buildStaff",
+        "fields": "id, name, role, lot, shift, status, email",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Facilities",
+        "type": "ILF",
+        "ret": 1,
+        "det": 6,
+        "source": "assets/js/core/store.js:LOTS",
+        "fields": "id, name, addr, zones, cap, rate",
+        "complexity": "Low",
+        "fp": 7
+      },
+      {
+        "name": "Create reservation and hold bay",
+        "type": "EI",
+        "ftr": [
+          "Facilities",
+          "Bays",
+          "Reservations"
+        ],
+        "det": 8,
+        "source": "views/booking.js:openBooking",
+        "fields": "facility, bay, hours, driver, plate, payment choice, submit action, response message",
+        "complexity": "High",
+        "fp": 6
+      },
+      {
+        "name": "Reserve bay directly",
+        "type": "EI",
+        "ftr": [
+          "Bays"
+        ],
+        "det": 3,
+        "source": "views/lotmap.js:slotModal/#res",
+        "fields": "bay ID, reserve action, response message",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Release bay",
+        "type": "EI",
+        "ftr": [
+          "Bays"
+        ],
+        "det": 3,
+        "source": "views/lotmap.js:slotModal/#rel",
+        "fields": "bay ID, release action, response message",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Acknowledge alerts (one/all variants)",
+        "type": "EI",
+        "ftr": [
+          "Alerts"
+        ],
+        "det": 4,
+        "source": "views/alerts.js:data-ack/ackall",
+        "fields": "alert ID, selection scope, acknowledge action, response message",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Dismiss alert",
+        "type": "EI",
+        "ftr": [
+          "Alerts"
+        ],
+        "det": 3,
+        "source": "views/alerts.js:data-dis",
+        "fields": "alert ID, dismiss action, response message",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Dashboard overview",
+        "type": "EO",
+        "ftr": [
+          "Bays",
+          "Sessions",
+          "Facilities"
+        ],
+        "det": 27,
+        "source": "views/dashboard.js:render",
+        "fields": "facility filter, range, occupancy %, occupied, reserved, available, total bays, revenue today, active sessions, average stay, EV busy, EV total, facility name, facility occupancy, time bucket, curve occupancy, curve revenue, previous revenue, activity text, activity time, driver, plate, vehicle, bay, session duration, accrued amount, session ID",
+        "complexity": "High",
+        "fp": 7
+      },
+      {
+        "name": "Analytics overview",
+        "type": "EO",
+        "ftr": [
+          "Sessions",
+          "Facilities",
+          "Bays"
+        ],
+        "det": 24,
+        "source": "views/analytics.js:render",
+        "fields": "total revenue, growth %, average ticket, settled count, peak occupancy, peak hour, turnover, month, current revenue, previous revenue, weekday, weekly revenue, weekly sessions, hour, hourly occupancy, facility name, address, capacity, facility occupancy, rate, daily yield, trend, payment rail, payment share",
+        "complexity": "High",
+        "fp": 7
+      },
+      {
+        "name": "Bay map with derived availability",
+        "type": "EO",
+        "ftr": [
+          "Bays",
+          "Facilities"
+        ],
+        "det": 17,
+        "source": "views/lotmap.js:render/drawStats/drawZones",
+        "fields": "facility, status filter, EV filter, available, occupied, reserved, utilisation %, total bays, hourly rate, address, zone, floor, zone free count, zone bay count, bay ID, bay status, bay type",
+        "complexity": "Average",
+        "fp": 5
+      },
+      {
+        "name": "Session ledger with summary/search",
+        "type": "EO",
+        "ftr": [
+          "Sessions"
+        ],
+        "det": 18,
+        "source": "views/sessions.js:render",
+        "fields": "search text, status, facility, method, active count, completed count, overstay count, gross value, session ID, driver, vehicle, plate, bay, start, duration, amount, result count, result range",
+        "complexity": "Low",
+        "fp": 4
+      },
+      {
+        "name": "Reservations with totals/arrivals/search",
+        "type": "EO",
+        "ftr": [
+          "Reservations"
+        ],
+        "det": 18,
+        "source": "views/bookings.js:render",
+        "fields": "search text, status, channel, upcoming count, confirmed count, no-show count, booked value, reference, guest, plate, arrival, date, hours, amount, facility, bay, result count, result range",
+        "complexity": "Low",
+        "fp": 4
+      },
+      {
+        "name": "Customers with plan mix/summary/search",
+        "type": "EO",
+        "ftr": [
+          "Customers"
+        ],
+        "det": 19,
+        "source": "views/customers.js:render",
+        "fields": "search text, plan, status, plan count, account count, lifetime revenue, active count, dormant count, EV count, average visits, name, email, vehicle count, visits, spend, joined date, customer ID, result count, result range",
+        "complexity": "Low",
+        "fp": 4
+      },
+      {
+        "name": "Alerts with severity summary/filter",
+        "type": "EO",
+        "ftr": [
+          "Alerts"
+        ],
+        "det": 13,
+        "source": "views/alerts.js:render",
+        "fields": "filter, critical count, warning count, unacknowledged count, devices online %, title, severity, acknowledgment, body, facility, time, alert ID, empty response",
+        "complexity": "Low",
+        "fp": 4
+      },
+      {
+        "name": "Team roster with totals/search",
+        "type": "EO",
+        "ftr": [
+          "Staff"
+        ],
+        "det": 14,
+        "source": "views/staff.js:render",
+        "fields": "search text, shift, duty status, on-duty count, team count, facility count, shift count, name, email, role, facility, staff ID, result count, result range",
+        "complexity": "Low",
+        "fp": 4
+      },
+      {
+        "name": "Session detail",
+        "type": "EQ",
+        "ftr": [
+          "Sessions"
+        ],
+        "det": 13,
+        "source": "views/dashboard.js:sessionModal",
+        "fields": "session ID, facility, bay, driver, plate, vehicle, start, duration, rate, method, status, accrued amount, EV flag",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Reservation detail",
+        "type": "EQ",
+        "ftr": [
+          "Reservations"
+        ],
+        "det": 9,
+        "source": "views/bookings.js:detail",
+        "fields": "reference, facility, bay, guest, plate, arrival, duration, channel, value",
+        "complexity": "Low",
+        "fp": 3
+      },
+      {
+        "name": "Customer detail and displayed sessions",
+        "type": "EQ",
+        "ftr": [
+          "Customers",
+          "Sessions"
+        ],
+        "det": 12,
+        "source": "views/customers.js:detail",
+        "fields": "customer ID, name, email, plan, lifetime spend, visits, vehicle count, joined date, session facility, bay, session date, session amount",
+        "complexity": "Average",
+        "fp": 4
+      }
+    ],
+    "ufp_proxy": 116,
+    "tdi": 20,
+    "legacy_vaf": 0.8500000000000001,
+    "legacy_adjusted_fp": 98.60000000000001
+  },
+  "eaf": 1.0,
+  "scenarios": [
+    {
+      "scope": "Measured JavaScript",
+      "kloc": 1.977,
+      "model": "Basic",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 4.909284993767323,
+      "duration_months": 4.576431240238514,
+      "average_staff": 1.0727321653174149,
+      "productivity_loc_per_pm": 402.70630091957145
+    },
+    {
+      "scope": "Measured JavaScript",
+      "kloc": 1.977,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 6.545713325023098,
+      "duration_months": 5.1050930400593355,
+      "average_staff": 1.2821927580279748,
+      "productivity_loc_per_pm": 302.0297256896785
+    },
+    {
+      "scope": "All website source (proxy)",
+      "kloc": 2.731,
+      "model": "Basic",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 6.892059638831706,
+      "duration_months": 5.206101594261262,
+      "average_staff": 1.3238427091835652,
+      "productivity_loc_per_pm": 396.2531003958259
+    },
+    {
+      "scope": "All website source (proxy)",
+      "kloc": 2.731,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 9.189412851775609,
+      "duration_months": 5.807501876357223,
+      "average_staff": 1.582334891562653,
+      "productivity_loc_per_pm": 297.18982529686946
+    }
+  ],
+  "fp_sensitivity": [
+    {
+      "assumed_loc_per_ufp": 40,
+      "kloc": 4.64,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 16.03222716628469,
+      "duration_months": 7.175260529580132,
+      "average_staff": 2.2343756160757597,
+      "productivity_loc_per_pm": 289.41705677410715
+    },
+    {
+      "assumed_loc_per_ufp": 47,
+      "kloc": 5.452,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 18.990378370166585,
+      "duration_months": 7.652137821735972,
+      "average_staff": 2.4817088782985888,
+      "productivity_loc_per_pm": 287.0927526417776
+    },
+    {
+      "assumed_loc_per_ufp": 60,
+      "kloc": 6.96,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 24.5408544629897,
+      "duration_months": 8.435252495943566,
+      "average_staff": 2.9093206723558267,
+      "productivity_loc_per_pm": 283.6087068808645
+    }
+  ],
+  "mode_sensitivity": [
+    {
+      "kloc": 1.977,
+      "model": "Basic",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 4.909284993767323,
+      "duration_months": 4.576431240238514,
+      "average_staff": 1.0727321653174149,
+      "productivity_loc_per_pm": 402.70630091957145
+    },
+    {
+      "kloc": 1.977,
+      "model": "Basic",
+      "mode": "Semi-detached",
+      "eaf": 1.0,
+      "effort_pm": 6.436484449702899,
+      "duration_months": 4.796970660246359,
+      "average_staff": 1.3417810750946597,
+      "productivity_loc_per_pm": 307.1552515117559
+    },
+    {
+      "kloc": 1.977,
+      "model": "Basic",
+      "mode": "Embedded",
+      "eaf": 1.0,
+      "effort_pm": 8.156625146906443,
+      "duration_months": 4.893542561433905,
+      "average_staff": 1.6668139787296323,
+      "productivity_loc_per_pm": 242.37965633983012
+    }
+  ],
+  "size_sensitivity": [
+    {
+      "factor": 0.8,
+      "kloc": 1.5816000000000001,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 5.1784700335409655,
+      "duration_months": 4.670211686914159,
+      "average_staff": 1.1088298305729771,
+      "productivity_loc_per_pm": 305.4183938027974
+    },
+    {
+      "factor": 1.0,
+      "kloc": 1.977,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 6.545713325023098,
+      "duration_months": 5.1050930400593355,
+      "average_staff": 1.2821927580279748,
+      "productivity_loc_per_pm": 302.0297256896785
+    },
+    {
+      "factor": 1.2,
+      "kloc": 2.3724,
+      "model": "Intermediate",
+      "mode": "Organic",
+      "eaf": 1.0,
+      "effort_pm": 7.926788843245456,
+      "duration_months": 5.490311414648059,
+      "average_staff": 1.4437776374755202,
+      "productivity_loc_per_pm": 299.28891092154674
+    }
+  ],
+  "costs": {
+    "rate_inr_per_pm": 60000,
+    "labour_inr": 392742.7995013859,
+    "contingency_inr": 39274.27995013859,
+    "budget_inr": 432017.07945152454,
+    "cost_per_ufp_inr": 3385.7137888050506,
+    "person_hours": 1047.3141320036957
+  }
+}

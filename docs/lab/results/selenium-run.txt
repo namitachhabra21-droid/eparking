@@ -1,0 +1,209 @@
+
+> parkflow@1.0.0 test:e2e
+> node --test --test-concurrency=1 "tests/e2e/*.test.js" --test-reporter=spec
+
+▶ E2E-ALR Alerts
+  ✔ E2E-ALR-01: "Open" filter lists exactly the unacknowledged alerts (1128.728792ms)
+  ✔ E2E-ALR-02: acknowledging one alert removes it from "Open" (178.581666ms)
+  ✔ E2E-ALR-03: "Acknowledge All" leaves nothing open (359.324083ms)
+  ✔ E2E-ALR-04: dismissing removes the alert (344.658ms)
+✔ E2E-ALR Alerts (3872.154625ms)
+▶ E2E-SET Settings
+  ✔ E2E-SET-01: all 5 tabs open their pane (476.784583ms)
+  ✔ E2E-SET-02: tariff table shows rate, daily cap (8×) and overstay fee (2×) (149.071708ms)
+  ✔ E2E-SET-03: surge threshold slider updates its label (127.482791ms)
+  ✔ E2E-SET-04: dark-mode switch changes theme and aria-checked (138.351ms)
+  ✔ E2E-SET-05: Save Changes confirms (340.360417ms)
+✔ E2E-SET Settings (1232.567541ms)
+▶ E2E-DSH Dashboard
+  ✔ E2E-DSH-01: chart range switch 24h / 7d / 6m redraws the chart (209.991917ms)
+  ✔ E2E-DSH-02: facility picker changes the rail meter to that facility (4098.770167ms)
+✔ E2E-DSH Dashboard (4309.059708ms)
+▶ TS-E1 Shell & navigation
+  ✔ E2E-01 app boots on the dashboard (524.027542ms)
+  ✔ E2E-02 sidebar lists all 9 modules (126.641375ms)
+  ✔ E2E-03 clicking a nav item routes to that page (238.615042ms)
+  ✔ E2E-04 unknown route falls back to the dashboard (204.162125ms)
+  ✔ E2E-05 rail meter shows a percentage (157.758ms)
+✔ TS-E1 Shell & navigation (2009.026208ms)
+▶ TS-E2 Sessions ledger
+  ✔ E2E-06 search narrows the table to matching rows (309.856333ms)
+  ✔ E2E-07 nonsense search shows the empty state (253.778833ms)
+  ✔ E2E-08 status filter keeps only that status (285.777083ms)
+  ✔ E2E-09 clicking a header sorts ascending then descending (257.056042ms)
+  ✔ E2E-10 pagination: Prev disabled on page 1, Next advances (231.962584ms)
+✔ TS-E2 Sessions ledger (1338.949292ms)
+▶ TS-E3 Booking wizard
+  ✔ E2E-11 cannot pass step 2 without choosing a bay (507.39025ms)
+  ✔ E2E-12 full booking holds the bay and confirms (836.216167ms)
+  ✔ E2E-13 Cancel closes the wizard (453.593208ms)
+✔ TS-E3 Booking wizard (1797.61975ms)
+▶ TS-E4 Preferences & shortcuts
+  ✔ E2E-14 dark mode toggles and survives reload (263.673625ms)
+  ✔ E2E-15 Ctrl+K opens the command palette and navigates (350.502708ms)
+✔ TS-E4 Preferences & shortcuts (614.57725ms)
+▶ E2E-BK Booking wizard
+  ✔ E2E-BK-01: step 1 lists all 4 facilities with their rates (989.842375ms)
+  ✔ E2E-BK-02: cannot continue from step 2 without a bay (507.037458ms)
+  ✔ E2E-BK-03: total payable = hourly rate × hours (₹80 × 3 h = ₹240) (785.897875ms)
+  ✔ E2E-BK-04: confirming reserves the bay and creates a confirmed reservation (1392.231875ms)
+  ✔ E2E-BK-05: Back keeps the chosen facility (333.381375ms)
+  ✔ E2E-BK-06: Escape closes the wizard without saving (597.568084ms)
+✔ E2E-BK Booking wizard (5650.20375ms)
+▶ E2E-DEF Known defects (todo)
+  ⚠ E2E-DEF-01: Check Out should complete the session (FR-3.4) (3308.087958ms) # DEF-01 open: Check Out only shows a toast
+  ⚠ E2E-DEF-02: Cancel Booking should cancel the reservation (FR-5) (2441.296208ms) # DEF-02 open: Cancel only shows a toast
+  ⚠ E2E-DEF-04: chosen start time should become the reservation arrival (FR-4.1) (542.865083ms) # DEF-04 open: start time input is ignored
+  ⚠ E2E-DEF-06: alert badge should update immediately after Ack (FR-8) (196.460083ms) # DEF-06 open: badge refreshes only on the next 4 s tick
+  ⚠ E2E-DEF-07: re-visiting a page should not stack click handlers (one click = one dialog) (673.315458ms) # DEF-07 open: views add listeners to the shared #view on every render
+  ⚠ E2E-DEF-08: name and plate should survive choosing a payment method (FR-4.1) (705.319292ms) # DEF-08 open: choosing a payment method repaints step 3 and clears typed fields
+✔ E2E-DEF Known defects (todo) (8778.13925ms)
+▶ E2E-MAP Live bay map
+  ✔ E2E-MAP-01: Central Plaza shows all 180 bays across 3 zones (716.666291ms)
+  ✔ E2E-MAP-02: switching facility repaints (Metro Interchange = 220 bays, ₹40/hr) (549.234875ms)
+  ✔ E2E-MAP-03: "Free" filter shows only free bays and matches the Available tile (556.595209ms)
+  ✔ E2E-MAP-04: "EV" filter shows only EV bays (455.007959ms)
+  ✔ E2E-MAP-05: reserving a free bay changes it to reserved (654.098917ms)
+  ✔ E2E-MAP-06: releasing an occupied bay frees it (858.00825ms)
+✔ E2E-MAP Live bay map (4614.524292ms)
+▶ E2E-NAV Shell & navigation
+  ✔ E2E-NAV-dashboard: page renders with no JavaScript errors (1142.431667ms)
+  ✔ E2E-NAV-map: page renders with no JavaScript errors (393.357625ms)
+  ✔ E2E-NAV-sessions: page renders with no JavaScript errors (432.061834ms)
+  ✔ E2E-NAV-bookings: page renders with no JavaScript errors (195.85175ms)
+  ✔ E2E-NAV-customers: page renders with no JavaScript errors (180.050166ms)
+  ✔ E2E-NAV-analytics: page renders with no JavaScript errors (157.631208ms)
+  ✔ E2E-NAV-alerts: page renders with no JavaScript errors (140.235917ms)
+  ✔ E2E-NAV-staff: page renders with no JavaScript errors (343.927875ms)
+  ✔ E2E-NAV-settings: page renders with no JavaScript errors (124.2965ms)
+  ✔ E2E-NAV-13: Ctrl+B collapses the sidebar and the choice persists (304.868167ms)
+✔ E2E-NAV Shell & navigation (4104.669792ms)
+▶ E2E-MOB Mobile layout
+  ✔ E2E-MOB-dashboard: no horizontal page scroll (620.794625ms)
+  ✔ E2E-MOB-map: no horizontal page scroll (349.794125ms)
+  ✔ E2E-MOB-sessions: no horizontal page scroll (261.786625ms)
+  ✔ E2E-MOB-bookings: no horizontal page scroll (247.641375ms)
+  ✔ E2E-MOB-customers: no horizontal page scroll (190.235708ms)
+  ✔ E2E-MOB-analytics: no horizontal page scroll (165.171958ms)
+  ✔ E2E-MOB-alerts: no horizontal page scroll (164.512458ms)
+  ✔ E2E-MOB-staff: no horizontal page scroll (163.532625ms)
+  ✔ E2E-MOB-settings: no horizontal page scroll (142.55125ms)
+  ✔ E2E-MOB-10: sidebar is an off-screen drawer that the menu button opens (1072.671916ms)
+✔ E2E-MOB Mobile layout (4005.323875ms)
+▶ E2E-TBL Data tables
+  ✔ E2E-TBL-01: sessions search by plate finds that session (781.314459ms)
+  ✔ E2E-TBL-02: sessions "overstay" filter count matches the Overstays tile (352.217666ms)
+  ✔ E2E-TBL-03: sorting Amount ascending gives a non-decreasing column (359.1185ms)
+  ✔ E2E-TBL-04: pagination range text is consistent and Prev enables on page 2 (174.012542ms)
+  ✔ E2E-TBL-05: reservations search by reference returns exactly one row (402.944542ms)
+  ✔ E2E-TBL-06: customers "Enterprise" filter shows only Enterprise accounts (150.101084ms)
+  ✔ E2E-TBL-07: customer row opens the account detail (175.347167ms)
+  ✔ E2E-TBL-08: staff "on-duty" filter count matches the On Duty tile (169.123791ms)
+  ✔ E2E-TBL-09: a search with no match shows the empty state (363.661834ms)
+✔ E2E-TBL Data tables (3687.767ms)
+ℹ tests 73
+ℹ suites 13
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 6
+ℹ duration_ms 48064.45425
+
+✖ failing tests:
+
+test at tests/e2e/known-defects.e2e.test.js:16:3
+⚠ E2E-DEF-01: Check Out should complete the session (FR-3.4) (3308.087958ms) # DEF-01 open: Check Out only shows a toast
+  Error [TimeoutError]: session status did not change to completed
+  Wait timed out after 2034ms
+      at /Users/namitachhabra/Documents/eparking/node_modules/selenium-webdriver/lib/webdriver.js:939:22
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    remoteStacktrace: ''
+  }
+
+test at tests/e2e/known-defects.e2e.test.js:27:3
+⚠ E2E-DEF-02: Cancel Booking should cancel the reservation (FR-5) (2441.296208ms) # DEF-02 open: Cancel only shows a toast
+  Error [TimeoutError]: reservation status did not change to cancelled
+  Wait timed out after 2034ms
+      at /Users/namitachhabra/Documents/eparking/node_modules/selenium-webdriver/lib/webdriver.js:939:22
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    remoteStacktrace: ''
+  }
+
+test at tests/e2e/known-defects.e2e.test.js:36:3
+⚠ E2E-DEF-04: chosen start time should become the reservation arrival (FR-4.1) (542.865083ms) # DEF-04 open: start time input is ignored
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   2,
+  +   20
+  -   23,
+  -   30
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/namitachhabra/Documents/eparking/tests/e2e/known-defects.e2e.test.js:48:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 2, 20 ],
+    expected: [ 23, 30 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/e2e/known-defects.e2e.test.js:51:3
+⚠ E2E-DEF-06: alert badge should update immediately after Ack (FR-8) (196.460083ms) # DEF-06 open: badge refreshes only on the next 4 s tick
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  4 !== 3
+  
+      at TestContext.<anonymous> (file:///Users/namitachhabra/Documents/eparking/tests/e2e/known-defects.e2e.test.js:56:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 4,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/e2e/known-defects.e2e.test.js:59:3
+⚠ E2E-DEF-07: re-visiting a page should not stack click handlers (one click = one dialog) (673.315458ms) # DEF-07 open: views add listeners to the shared #view on every render
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///Users/namitachhabra/Documents/eparking/tests/e2e/known-defects.e2e.test.js:66:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/e2e/known-defects.e2e.test.js:69:3
+⚠ E2E-DEF-08: name and plate should survive choosing a payment method (FR-4.1) (705.319292ms) # DEF-08 open: choosing a payment method repaints step 3 and clears typed fields
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '' !== 'Asha Rao'
+  
+      at TestContext.<anonymous> (file:///Users/namitachhabra/Documents/eparking/tests/e2e/known-defects.e2e.test.js:80:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'Asha Rao',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,151 +1,109 @@
-import { LOTS, money } from '../core/store.js';
-import { esc, toast } from '../core/ui.js';
-import { icon } from '../core/icons.js';
-
-const TABS = [
-  ['general', 'General', 'gear'], ['pricing', 'Pricing', 'wallet'],
-  ['facilities', 'Facilities', 'building'], ['hardware', 'Hardware', 'cpu'],
-  ['notify', 'Notifications', 'bell'],
-];
-
-const toggle = (id, on, label, sub) => `
-  <div class="row" style="padding:13px 0;border-bottom:1px solid var(--border-soft)">
-    <div style="flex:1"><div class="fw6 fs13">${esc(label)}</div>
-      <div class="fs12 t3" style="margin-top:2px">${esc(sub)}</div></div>
-    <button class="sw ${on ? 'on' : ''}" data-sw="${id}" role="switch" aria-checked="${on}"><i></i></button>
-  </div>`;
-
+import { DB, LOTS, money, action } from "../core/store.js";
+import { esc, toast } from "../core/ui.js";
+import { facilityForm } from "../core/forms.js";
+import { currentUser } from "../core/api.js";
 export function render(root, ctx) {
-  let tab = 'general';
-
-  root.innerHTML = `
-    <div class="page-head">
-      <div class="ph-txt"><h2>Settings</h2><p>Configure your organisation, tariffs, facilities and devices.</p></div>
-      <div class="ph-act"><button class="btn btn-primary" data-act="save">${icon('check')} Save Changes</button></div>
-    </div>
-    <div class="grid g-23">
-      <div class="card" style="align-self:start">
-        <nav class="nav" style="padding:10px">
-          ${TABS.map(([k, l, i]) => `
-            <button class="nav-item ${k === 'general' ? 'active' : ''}" data-tab="${k}">
-              ${icon(i)}<span class="nav-txt">${l}</span></button>`).join('')}
-        </nav>
-      </div>
-      <div id="pane"></div>
-    </div>`;
-
-  const pane = root.querySelector('#pane');
-
-  const panes = {
-    general: () => `
-      <div class="card"><div class="card-head"><div style="flex:1"><h3>Organisation</h3><p>Shown on receipts and the driver app</p></div></div>
-        <div class="card-body">
-          <div class="grid g-2" style="gap:14px">
-            <div><label class="lbl">Company name</label><input class="field" style="width:100%;height:38px" value="ParkFlow Operations Pvt Ltd"></div>
-            <div><label class="lbl">Support email</label><input class="field" style="width:100%;height:38px" value="ops@parkflow.io"></div>
-            <div><label class="lbl">Currency</label><select class="field" style="width:100%;height:38px"><option>INR — Indian Rupee</option><option>USD — US Dollar</option><option>AED — Dirham</option></select></div>
-            <div><label class="lbl">Timezone</label><select class="field" style="width:100%;height:38px"><option>Asia/Kolkata (GMT+5:30)</option><option>Asia/Dubai (GMT+4)</option></select></div>
-          </div>
-        </div></div>
-      <div class="card" style="margin-top:16px"><div class="card-head"><div style="flex:1"><h3>Appearance</h3><p>Theme applies instantly</p></div></div>
-        <div class="card-body">
-          ${toggle('theme', document.documentElement.dataset.theme === 'dark', 'Dark mode', 'Reduce glare for night-shift operators')}
-          ${toggle('dense', false, 'Compact density', 'Fit more rows per screen')}
-          ${toggle('anim', true, 'Motion effects', 'Chart draw-in and transitions')}
-        </div></div>`,
-
-    pricing: () => `
-      <div class="card"><div class="card-head"><div style="flex:1"><h3>Tariff Plans</h3><p>Per-facility hourly rates and caps</p></div>
-        <button class="btn btn-sm btn-ghost">${icon('plus')} Add Tariff</button></div>
-        <div class="tbl-wrap"><table class="tbl">
-          <thead><tr><th>Facility</th><th>Hourly</th><th>Daily Cap</th><th>Grace</th><th>Overstay Fee</th><th></th></tr></thead>
-          <tbody>${LOTS.map(l => `<tr>
-            <td><b class="fw6">${esc(l.name)}</b><div class="muted">${esc(l.addr)}</div></td>
-            <td class="num">${money(l.rate)}</td>
-            <td class="num">${money(l.rate * 8)}</td>
-            <td class="num">15 min</td>
-            <td class="num">${money(l.rate * 2)}</td>
-            <td><button class="btn btn-sm btn-subtle">${icon('sliders')}</button></td></tr>`).join('')}
-          </tbody></table></div></div>
-      <div class="card" style="margin-top:16px"><div class="card-head"><div style="flex:1"><h3>Dynamic Pricing</h3><p>Surge tariffs during peak demand</p></div></div>
-        <div class="card-body">
-          ${toggle('surge', true, 'Enable surge pricing', 'Raise rates when occupancy exceeds threshold')}
-          ${toggle('ev', true, 'EV preferential rate', '20% discount on EV-designated bays')}
-          ${toggle('loyal', false, 'Loyalty auto-discount', 'Apply tier discounts at checkout')}
-          <div style="margin-top:16px"><label class="lbl">Surge trigger — occupancy threshold</label>
-            <div class="row" style="gap:14px"><input type="range" min="50" max="100" value="85" id="rng" style="flex:1;accent-color:var(--brand-500)">
-            <b class="fw7" id="rngv" style="min-width:46px;font-variant-numeric:tabular-nums">85%</b></div></div>
-        </div></div>`,
-
-    facilities: () => `
-      <div class="grid g-2">
-        ${LOTS.map(l => `
-          <div class="card hoverable"><div class="card-body">
-            <div class="row" style="gap:11px;margin-bottom:12px">
-              <div class="stat-ico" style="--tint:${l.tint}">${icon('building')}</div>
-              <div style="flex:1"><b class="fw7 fs13">${esc(l.name)}</b>
-                <div class="fs12 t3">${esc(l.addr)}</div></div>
-              <span class="badge ok"><i class="bdot"></i>online</span>
-            </div>
-            <div class="grid g-3" style="gap:9px">
-              ${[['Capacity', l.cap], ['Zones', l.zones.length], ['Rate', money(l.rate)]].map(([k, v]) =>
-                `<div style="background:var(--surface-2);border-radius:var(--r-sm);padding:9px 11px">
-                  <div class="fs11 t3 fw6">${k}</div><div class="fw7" style="margin-top:2px">${v}</div></div>`).join('')}
-            </div>
-            <button class="btn btn-ghost btn-block btn-sm" style="margin-top:12px">${icon('sliders')} Configure</button>
-          </div></div>`).join('')}
-      </div>`,
-
-    hardware: () => `
-      <div class="card"><div class="card-head"><div style="flex:1"><h3>Connected Devices</h3><p>Barriers, ANPR cameras and charge points</p></div>
-        <span class="live-pill"><i class="ld"></i> 98% online</span></div>
-        <div class="tbl-wrap"><table class="tbl">
-          <thead><tr><th>Device</th><th>Type</th><th>Facility</th><th>Firmware</th><th>Status</th></tr></thead>
-          <tbody>${[
-            ['GATE-A1', 'Entry Barrier', 'Central Plaza', 'v4.2.1', 'ok'],
-            ['ANPR-C3', 'Plate Camera', 'Central Plaza', 'v2.8.0', 'ok'],
-            ['ANPR-G3', 'Plate Camera', 'Skyline Tower', 'v2.7.4', 'bad'],
-            ['EVSE-07', 'DC Charger 60kW', 'Metro Interchange', 'v1.9.2', 'warn'],
-            ['GATE-B2', 'Exit Barrier', 'Airport T2', 'v4.2.1', 'ok'],
-            ['KIOSK-2', 'Payment Kiosk', 'Metro Interchange', 'v3.0.5', 'ok'],
-          ].map(([d, t, f, v, s]) => `<tr>
-            <td><span class="mono fw6">${d}</span></td><td>${t}</td><td>${f}</td><td class="num">${v}</td>
-            <td><span class="badge ${s}"><i class="bdot"></i>${s === 'ok' ? 'online' : s === 'warn' ? 'degraded' : 'offline'}</span></td>
-          </tr>`).join('')}</tbody></table></div></div>`,
-
-    notify: () => `
-      <div class="card"><div class="card-head"><div style="flex:1"><h3>Notification Channels</h3><p>Where operational alerts are delivered</p></div></div>
-        <div class="card-body">
-          ${toggle('n1', true, 'Critical incidents — SMS', 'Barrier failures and safety events')}
-          ${toggle('n2', true, 'Overstay alerts — Email', 'Sent to the facility supervisor')}
-          ${toggle('n3', false, 'Daily revenue digest', 'Delivered at 07:00 local time')}
-          ${toggle('n4', true, 'Hardware health — Slack', 'Posted to #parkflow-ops')}
-          ${toggle('n5', false, 'Capacity forecasts — Webhook', 'POST to your endpoint hourly')}
-        </div></div>`,
-  };
-
+  root.innerHTML = `<div class="page-head"><div class="ph-txt"><h2>Settings</h2><p>Organization details, pricing, facilities and operating policy.</p></div></div><div class="grid g-23"><div class="card" style="align-self:start"><nav class="nav" style="padding:10px">${[
+    ["general", "Organization"],
+    ["facilities", "Facilities and pricing"],
+    ["policy", "Alerts and reservations"],
+    ["integrations", "Integrations"],
+  ]
+    .map(
+      ([id, label]) =>
+        `<button class="nav-item ${id === "general" ? "active" : ""}" data-tab="${id}">${label}</button>`,
+    )
+    .join("")}</nav></div><div id="settings-pane"></div></div>`;
+  const pane = root.querySelector("#settings-pane");
+  let tab = "general";
   const paint = () => {
-    pane.innerHTML = panes[tab]();
-    const rng = pane.querySelector('#rng');
-    if (rng) rng.addEventListener('input', e => pane.querySelector('#rngv').textContent = e.target.value + '%');
+    if (tab === "general")
+      pane.innerHTML = `<div class="card"><div class="card-head"><h3>Organization</h3></div><div class="card-body"><form id="settings-form"><div class="form-grid"><div><label class="lbl" for="org-name">Organization name</label><input class="field" id="org-name" name="name" value="${esc(DB.settings.name)}" minlength="2" maxlength="120" required></div><div><label class="lbl" for="org-email">Support email</label><input class="field" id="org-email" name="email" type="email" value="${esc(DB.settings.email || "")}"></div></div><p class="fs12 t3" style="margin:18px 0">Currency INR · Operational day Asia/Kolkata. Session timestamps are stored in UTC.</p><p class="form-error" role="alert"></p><button class="btn btn-primary" type="submit">Save organization</button></form></div></div><div class="card" style="margin-top:16px"><div class="card-body"><h3>Appearance</h3><p class="t2 fs12" style="margin:10px 0">Your theme preference is stored on this device.</p><button class="btn btn-ghost" id="settings-theme">Toggle dark mode</button></div></div>`;
+    else if (tab === "facilities")
+      pane.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:16px"><p class="t2 fs12">Rates apply to new bookings. Existing sessions keep their agreed rate.</p><button class="btn btn-primary" id="add-facility">Add facility</button></div><div class="grid g-2">${LOTS.map((l) => `<div class="card"><div class="card-body"><h3>${esc(l.name)}</h3><p class="fs12 t3" style="margin:8px 0">${esc(l.addr)}</p><p>${l.cap} bays · ${money(l.rate)}/hour</p><p class="fs12 t3" style="margin:8px 0">Zones ${l.zones.map(esc).join(", ")}</p><button class="btn btn-ghost btn-sm" data-edit-facility="${l.id}">Edit facility and tariff</button></div></div>`).join("")}</div>`;
+    else if (tab === "policy")
+      pane.innerHTML = `<div class="card"><div class="card-head"><h3>Operating policy</h3></div><div class="card-body"><form id="policy-form"><div class="form-grid"><div><label class="lbl" for="occupancy-threshold">Occupancy alert threshold percent</label><input class="field" name="occupancyThreshold" id="occupancy-threshold" type="number" min="50" max="100" value="${DB.settings.occupancyThreshold}" required></div><div><label class="lbl" for="reservation-grace">Reservation arrival grace minutes</label><input class="field" name="reservationGrace" id="reservation-grace" type="number" min="5" max="120" value="${DB.settings.reservationGrace}" required></div></div><p class="fs12 t3" style="margin:16px 0">An unclaimed reservation becomes a no-show after the grace period. Overdue sessions raise an alert. Alerts are evaluated when the workspace syncs.</p><p class="form-error" role="alert"></p><button class="btn btn-primary" type="submit">Save policy</button></form></div></div>`;
+    else
+      pane.innerHTML = `<div class="card"><div class="card-head"><h3>Integrations</h3></div><div class="card-body"><p class="t2">This workspace uses manually managed arrivals and manually recorded payments.</p><div class="account-list">${[
+        ["Database", "Connected · PostgreSQL"],
+        [
+          "Online payment gateway",
+          "Not connected · no online charges are made",
+        ],
+        [
+          "ANPR cameras and barriers",
+          "Not connected · use Find Plate and Check In",
+        ],
+        [
+          "Email SMS and EV telemetry",
+          "Not connected · alerts are available inside the application",
+        ],
+      ]
+        .map(
+          ([k, v]) =>
+            `<div class="account-row"><b class="fs12">${k}</b><span class="fs12 t3">${v}</span></div>`,
+        )
+        .join(
+          "",
+        )}</div><p class="fs12 t3">Use the Team module for shift records. Workspace login permissions are managed from your account menu.</p></div></div>`;
+    pane
+      .querySelector("#settings-theme")
+      ?.addEventListener("click", () =>
+        ctx.setTheme(
+          document.documentElement.dataset.theme === "dark" ? "light" : "dark",
+        ),
+      );
+    pane
+      .querySelector("#add-facility")
+      ?.addEventListener("click", () => facilityForm());
+    pane
+      .querySelectorAll("[data-edit-facility]")
+      .forEach(
+        (b) =>
+          (b.onclick = () =>
+            facilityForm(LOTS.find((l) => l.id === b.dataset.editFacility))),
+      );
+    for (const form of pane.querySelectorAll("form"))
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const values = Object.fromEntries(new FormData(form));
+        const b = form.querySelector("button");
+        b.disabled = true;
+        try {
+          await action("settings", {
+            ...DB.settings,
+            ...values,
+            occupancyThreshold: Number(
+              values.occupancyThreshold ?? DB.settings.occupancyThreshold,
+            ),
+            reservationGrace: Number(
+              values.reservationGrace ?? DB.settings.reservationGrace,
+            ),
+          });
+          toast(
+            "Settings saved",
+            "Changes are stored for your workspace",
+            "ok",
+          );
+        } catch (error) {
+          form.querySelector(".form-error").textContent = error.message;
+          b.disabled = false;
+        }
+      };
+    if (currentUser.role !== "admin")
+      pane
+        .querySelectorAll("form button,[data-edit-facility],#add-facility")
+        .forEach((b) => (b.disabled = true));
   };
+  root.querySelectorAll("[data-tab]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        tab = b.dataset.tab;
+        root
+          .querySelectorAll("[data-tab]")
+          .forEach((x) => x.classList.toggle("active", x === b));
+        paint();
+      }),
+  );
   paint();
-
-  root.querySelector('nav').addEventListener('click', e => {
-    const b = e.target.closest('[data-tab]'); if (!b) return;
-    tab = b.dataset.tab;
-    root.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('active', x === b));
-    paint();
-  });
-
-  root.addEventListener('click', e => {
-    const sw = e.target.closest('[data-sw]');
-    if (sw) {
-      const on = sw.classList.toggle('on');
-      sw.setAttribute('aria-checked', on);
-      if (sw.dataset.sw === 'theme') ctx.setTheme(on ? 'dark' : 'light');
-      return;
-    }
-    if (e.target.closest('[data-act="save"]')) toast('Settings saved', 'Changes applied across all facilities', 'ok');
-  });
 }
