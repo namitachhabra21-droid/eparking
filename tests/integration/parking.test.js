@@ -334,3 +334,81 @@ test("schema validation prevents invalid tariff and capacity mutations", () => {
     }),
   );
 });
+
+test("sample data is linked, idempotent and preserves existing records", () => {
+  const s = initialState("Demo test"),
+    u = { id: "demo-admin", name: "Demo Admin", role: "admin" },
+    now = Date.now();
+  const booking = applyAction(
+    s,
+    u,
+    "book",
+    {
+      slot: "L1-A01",
+      name: "Existing driver",
+      plate: "MH12XX9999",
+      hours: 1,
+      at: now,
+      method: "Cash",
+    },
+    now,
+  );
+  const result = applyAction(s, u, "demo", {}, now);
+  assert.equal(result.completedSessions, 84);
+  assert.equal(s.sessions.length, 102);
+  assert.equal(s.payments.length, 84);
+  assert.equal(s.staff.length, 8);
+  assert.equal(
+    s.slots.find((b) => b.id === "L1-A01").reservationId,
+    booking.id,
+  );
+  for (const session of s.sessions) {
+    assert.ok(s.customers.some((c) => c.id === session.customerId));
+    assert.ok(s.reservations.some((r) => r.id === session.reservationId));
+    if (session.status === "active" || session.status === "overstay")
+      assert.equal(
+        s.slots.find((b) => b.id === session.slot).status,
+        "occupied",
+      );
+  }
+  const count = s.sessions.length;
+  applyAction(s, u, "demo", {}, now + 1000);
+  assert.equal(s.sessions.length, count);
+  assert.ok(s.payments.every((p) => p.demo && p.kind === "sample"));
+  assert.throws(
+    () =>
+      applyAction(
+        initialState("Blocked"),
+        { ...u, role: "operator" },
+        "demo",
+        {},
+        now,
+      ),
+    /Administrator/,
+  );
+});
+
+test("sample data action persists through authenticated API and stays idempotent", async () => {
+  const demoAgent = request.agent(app);
+  const signup = await demoAgent
+    .post("/api/auth/register")
+    .send({
+      name: "Demo Owner",
+      email: "demo.owner@example.com",
+      password,
+      organization: "Sample Workspace",
+    })
+    .expect(201);
+  const load = () =>
+    demoAgent
+      .post("/api/actions")
+      .set("X-CSRF-Token", signup.body.csrf)
+      .send({ type: "demo", data: {} });
+  const first = await load().expect(200);
+  assert.equal(first.body.state.sessions.length, 102);
+  assert.equal(first.body.state.payments.length, 84);
+  await load().expect(200);
+  const saved = await demoAgent.get("/api/state").expect(200);
+  assert.equal(saved.body.state.sessions.length, 102);
+  assert.ok(saved.body.state.demo);
+});

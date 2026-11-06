@@ -69,6 +69,8 @@ export function confirmAction(title, message, type, data) {
   });
 }
 export function exportCSV(filename, rows, keys) {
+  if (rows.some((r) => r.demo) && !keys.includes("demo"))
+    keys = [...keys, "demo"];
   const safe = (v) => {
     let s = String(v ?? "");
     if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
@@ -230,7 +232,7 @@ export function checkoutForm(s) {
 }
 export function receipt(s) {
   const payment = DB.payments.find((p) => p.sessionId === s.id);
-  const text = `${DB.settings.name}\nPARKING RECEIPT\n\nSession: ${s.id}\nDriver: ${s.user}\nPlate: ${s.plate}\nFacility: ${s.lot}\nBay: ${s.slot}\nEntry: ${new Date(s.start).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}\nExit: ${s.end ? new Date(s.end).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) : "In progress"}\nDuration: ${s.mins} minutes\nRate: ${money(s.rate)} / hour\nTotal: ${money(s.amount)}\nPayment: ${payment ? payment.method + " recorded" : "Unpaid"}\nReference: ${payment?.reference || payment?.id || "—"}\nRecorded by: ${currentUser?.name || ""}\n\nThis receipt records a manually confirmed payment.`;
+  const text = `${DB.settings.name}\n${s.demo ? "SAMPLE PARKING RECEIPT" : "PARKING RECEIPT"}\n\nSession: ${s.id}\nDriver: ${s.user}\nPlate: ${s.plate}\nFacility: ${s.lot}\nBay: ${s.slot}\nEntry: ${new Date(s.start).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}\nExit: ${s.end ? new Date(s.end).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) : "In progress"}\nDuration: ${s.mins} minutes\nRate: ${money(s.rate)} / hour\nTotal: ${money(s.amount)}\nPayment: ${payment ? payment.method + " recorded" : "Unpaid"}\nReference: ${payment?.reference || payment?.id || "—"}\nRecorded by: ${currentUser?.name || ""}\n\n${s.demo ? "Fictional sample receipt for demonstration. No real payment was collected." : "This receipt records a manually confirmed payment."}`;
   modal({
     title: "Parking receipt",
     body: `<pre class="receipt">${esc(text)}</pre>`,

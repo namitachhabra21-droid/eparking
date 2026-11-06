@@ -1,3 +1,4 @@
+import { loadDemoData } from "./demo.js";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 export class HttpError extends Error {
@@ -33,6 +34,7 @@ export const userSchema = credentials.extend({
   role: roles,
 });
 export const schemas = {
+  demo: z.object({}),
   book: z.object({
     slot: id,
     name: str(2, 100),
@@ -250,7 +252,10 @@ export function reconcile(state, now = Date.now()) {
 }
 export function applyAction(state, user, type, input, now = Date.now()) {
   if (user.role === "viewer") fail(403, "Your account has read-only access");
-  if (["settings", "facility", "staff"].includes(type) && user.role !== "admin")
+  if (
+    ["settings", "facility", "staff", "demo"].includes(type) &&
+    user.role !== "admin"
+  )
     fail(403, "Administrator access required");
   const schema = schemas[type];
   if (!schema) fail(400, "Unknown operation");
@@ -259,6 +264,7 @@ export function applyAction(state, user, type, input, now = Date.now()) {
   let result;
   const find = (list, value) =>
     list.find((r) => r.id === value) || fail(404, "Record not found");
+  if (type === "demo") return loadDemoData(state, user, now);
   if (type === "book") {
     const bay = find(state.slots, x.slot);
     if (bay.status !== "free")
@@ -390,7 +396,12 @@ export function applyAction(state, user, type, input, now = Date.now()) {
       reference: x.reference || null,
       paidAt: now,
       recordedBy: user.id,
-      kind: x.method === "Cash" ? "cash-recorded" : "externally-verified",
+      kind: s.demo
+        ? "sample"
+        : x.method === "Cash"
+          ? "cash-recorded"
+          : "externally-verified",
+      demo: Boolean(s.demo),
     };
     state.payments.unshift(pay);
     s.paymentId = pay.id;

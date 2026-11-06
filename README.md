@@ -74,3 +74,7 @@ The deployment serves only `public/` plus the API function; reports, local datab
 **Scale:** a JSONB aggregate per organization is deliberately simple and provides atomic changes. Large fleets should migrate high-volume records into indexed relational tables and use dedicated event ingestion. Received-payment summaries use recorded receipts; historical records are never generated to fill charts. The day total uses Asia/Kolkata; historical chart buckets are labeled UTC.
 
 See [API and data design](docs/fullstack.md) for endpoints, security, transactions and operational notes. The Word reports in local `outputs/` describe the earlier prototype and are not a specification of this release.
+
+## Presentation sample data
+
+Administrators can open **Settings → Sample demo data → Load sample data**. This adds 12 fictional customers, 8 staff members, 18 active sessions, 84 historical completed sessions with sample payments, 10 upcoming reservations and 2 maintenance bays. Existing records are preserved and only free bays are committed. Loading twice does not duplicate records. A persistent banner identifies the fictional data, sample receipts are labeled, and exports include a demo column when applicable. Sample data is not real parking revenue.

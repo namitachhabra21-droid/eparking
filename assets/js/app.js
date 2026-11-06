@@ -240,6 +240,12 @@ function navigate(route, force = false) {
   qs("#pg-crumb").textContent = `ParkFlow · ${r.c}`;
   document.title = `${r.t} — ParkFlow`;
 
+  qs("#demo-notice")?.remove();
+  if (DB.demo)
+    qs("#scroll").insertAdjacentHTML(
+      "afterbegin",
+      '<div id="demo-notice" class="demo-notice" role="status">Sample data included · Demonstration records and payment amounts are fictional.</div>',
+    );
   const previous = qs("#view");
   const view = previous.cloneNode(false);
   previous.replaceWith(view);

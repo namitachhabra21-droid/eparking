@@ -188,3 +188,23 @@ test("mobile layout is usable without horizontal document overflow", async () =>
     ).includes("rail-open"),
   );
 });
+
+test("administrator can load persistent sample data from settings", async () => {
+  await driver.manage().window().setRect({ width: 1440, height: 900 });
+  await driver.get(base + "/#settings");
+  await visible(driver, '[data-tab="demo"]');
+  await click(driver, '[data-tab="demo"]');
+  await click(driver, "#load-demo-data");
+  await click(driver, "#confirm-operation");
+  await visible(driver, "#demo-notice");
+  await driver.get(base + "/#sessions");
+  await visible(driver, "#dt [data-count]");
+  assert.equal(await text(driver, "#dt [data-count]"), "103 records");
+  await driver.navigate().refresh();
+  await visible(driver, "#demo-notice");
+  assert.ok((await text(driver, "#demo-notice")).includes("fictional"));
+  await driver.get(base + "/#settings");
+  await visible(driver, '[data-tab="demo"]');
+  await click(driver, '[data-tab="demo"]');
+  await waitBody("Sample data already loaded");
+});

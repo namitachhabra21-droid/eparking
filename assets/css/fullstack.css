@@ -224,3 +224,10 @@
     display: none !important;
   }
 }
+.demo-notice {
+  padding: 10px 28px;
+  background: var(--info-bg);
+  color: var(--text-2);
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}

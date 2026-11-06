@@ -1,5 +1,6 @@
 import { DB, LOTS, money, action } from "../core/store.js";
 import { esc, toast } from "../core/ui.js";
+import { confirmAction } from "../core/forms.js";
 import { facilityForm } from "../core/forms.js";
 import { currentUser } from "../core/api.js";
 export function render(root, ctx) {
@@ -8,6 +9,7 @@ export function render(root, ctx) {
     ["facilities", "Facilities and pricing"],
     ["policy", "Alerts and reservations"],
     ["integrations", "Integrations"],
+    ["demo", "Sample demo data"],
   ]
     .map(
       ([id, label]) =>
@@ -23,6 +25,8 @@ export function render(root, ctx) {
       pane.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:16px"><p class="t2 fs12">Rates apply to new bookings. Existing sessions keep their agreed rate.</p><button class="btn btn-primary" id="add-facility">Add facility</button></div><div class="grid g-2">${LOTS.map((l) => `<div class="card"><div class="card-body"><h3>${esc(l.name)}</h3><p class="fs12 t3" style="margin:8px 0">${esc(l.addr)}</p><p>${l.cap} bays · ${money(l.rate)}/hour</p><p class="fs12 t3" style="margin:8px 0">Zones ${l.zones.map(esc).join(", ")}</p><button class="btn btn-ghost btn-sm" data-edit-facility="${l.id}">Edit facility and tariff</button></div></div>`).join("")}</div>`;
     else if (tab === "policy")
       pane.innerHTML = `<div class="card"><div class="card-head"><h3>Operating policy</h3></div><div class="card-body"><form id="policy-form"><div class="form-grid"><div><label class="lbl" for="occupancy-threshold">Occupancy alert threshold percent</label><input class="field" name="occupancyThreshold" id="occupancy-threshold" type="number" min="50" max="100" value="${DB.settings.occupancyThreshold}" required></div><div><label class="lbl" for="reservation-grace">Reservation arrival grace minutes</label><input class="field" name="reservationGrace" id="reservation-grace" type="number" min="5" max="120" value="${DB.settings.reservationGrace}" required></div></div><p class="fs12 t3" style="margin:16px 0">An unclaimed reservation becomes a no-show after the grace period. Overdue sessions raise an alert. Alerts are evaluated when the workspace syncs.</p><p class="form-error" role="alert"></p><button class="btn btn-primary" type="submit">Save policy</button></form></div></div>`;
+    else if (tab === "demo")
+      pane.innerHTML = `<div class="card"><div class="card-head"><h3>Sample demo data</h3></div><div class="card-body"><p>Populate your workspace with fictional parking records for presentations.</p><p class="fs12 t3" style="margin:16px 0">Includes 12 customers, 8 staff members, 18 active sessions, 84 completed sessions with sample receipts, 10 upcoming bookings and 2 maintenance bays. Existing records are preserved and only available bays are used. Loading again does not create duplicates.</p>${DB.demo ? '<span class="badge info">Sample data already loaded</span>' : '<button class="btn btn-primary" id="load-demo-data">Load sample data</button>'}<p class="fs12 t3" style="margin-top:16px">Sample payments are fictional amounts for demonstration, not real money received.</p></div></div>`;
     else
       pane.innerHTML = `<div class="card"><div class="card-head"><h3>Integrations</h3></div><div class="card-body"><p class="t2">This workspace uses manually managed arrivals and manually recorded payments.</p><div class="account-list">${[
         ["Database", "Connected · PostgreSQL"],
@@ -46,6 +50,16 @@ export function render(root, ctx) {
         .join(
           "",
         )}</div><p class="fs12 t3">Use the Team module for shift records. Workspace login permissions are managed from your account menu.</p></div></div>`;
+    pane
+      .querySelector("#load-demo-data")
+      ?.addEventListener("click", () =>
+        confirmAction(
+          "Load sample data",
+          "Add fictional demonstration records? Existing records will be preserved.",
+          "demo",
+          {},
+        ),
+      );
     pane
       .querySelector("#settings-theme")
       ?.addEventListener("click", () =>
@@ -92,7 +106,9 @@ export function render(root, ctx) {
       };
     if (currentUser.role !== "admin")
       pane
-        .querySelectorAll("form button,[data-edit-facility],#add-facility")
+        .querySelectorAll(
+          "form button,[data-edit-facility],#add-facility,#load-demo-data",
+        )
         .forEach((b) => (b.disabled = true));
   };
   root.querySelectorAll("[data-tab]").forEach(
